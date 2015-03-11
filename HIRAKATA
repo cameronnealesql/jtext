@@ -1,0 +1,27 @@
+IF OBJECT_ID(N'JTEXT.HIRAKATA', N'FN') IS NOT NULL DROP FUNCTION JTEXT.HIRAKATA;
+GO
+
+CREATE FUNCTION JTEXT.HIRAKATA(@HIRAGANA AS NVARCHAR(MAX))
+  RETURNS NVARCHAR(MAX)
+
+AS
+BEGIN
+  DECLARE @KATAKANA AS NVARCHAR(MAX) = N''
+  DECLARE @POS AS INT = 0
+  DECLARE @TEMPCHAR AS INT
+
+  WHILE @POS <= LEN(@HIRAGANA)
+    BEGIN
+      SET @TEMPCHAR = UNICODE(SUBSTRING(@HIRAGANA, @POS, 1))
+      SET @KATAKANA = CONCAT(
+                        @KATAKANA,
+                        NCHAR(@TEMPCHAR + CASE
+                                            WHEN @TEMPCHAR >= 12353
+                                              AND @TEMPCHAR <= 12438 THEN 96
+                                            ELSE 0
+                                          END))
+      SET @POS += 1
+  END
+  RETURN @KATAKANA
+END;
+GO

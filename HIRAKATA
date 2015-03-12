@@ -8,20 +8,18 @@ AS
 BEGIN
   DECLARE @KATAKANA AS NVARCHAR(MAX) = N''
   DECLARE @POS AS INT = 0
-  DECLARE @TEMPCHAR AS INT
+  DECLARE @TEMPCHAR AS INT = 0
 
   WHILE @POS <= LEN(@HIRAGANA)
     BEGIN
-      SET @TEMPCHAR = UNICODE(SUBSTRING(@HIRAGANA, @POS, 1))
-      SET @KATAKANA = CONCAT(
-                        @KATAKANA,
-                        NCHAR(@TEMPCHAR + CASE
-                                            WHEN @TEMPCHAR >= 12353
-                                              AND @TEMPCHAR <= 12438 THEN 96
-                                            ELSE 0
-                                          END))
-      SET @POS += 1
+      SET @TEMPCHAR = UNICODE(SUBSTRING(@HIRAGANA, @POS, 1));
+      IF (@TEMPCHAR >= 12353) AND (@TEMPCHAR <= 12438)
+        BEGIN
+          SET @TEMPCHAR += 96
+        END
+      SET @KATAKANA = CONCAT(@KATAKANA, NCHAR(@TEMPCHAR));
+      SET @POS += 1;
   END
-  RETURN @KATAKANA
+  RETURN @KATAKANA;
 END;
 GO

@@ -1,6 +1,8 @@
+-- The JTEXT schema must first be created in order for the following code to work. (See jtext/jtext_schema.sql)
 IF OBJECT_ID(N'JTEXT.HIRAKATA', N'FN') IS NOT NULL DROP FUNCTION JTEXT.HIRAKATA;
 GO
 
+-- Input MUST be in Unicode
 CREATE FUNCTION JTEXT.HIRAKATA(@HIRAGANA AS NVARCHAR(MAX))
   RETURNS NVARCHAR(MAX)
 

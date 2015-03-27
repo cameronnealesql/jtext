@@ -1,0 +1,1 @@
+--This UDF will detect whether or not a string contains certain CJK characters in a string of text
